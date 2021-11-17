@@ -1,6 +1,8 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import EncryptedStorage from 'react-native-encrypted-storage';
+
 
 import {
   SafeAreaView,
@@ -20,19 +22,19 @@ const ChangePasswordScreen = ( { navigation } ) => {
 
 const [passField, setPassField] = useState('')
 
-
 const handleSend = async () => {
 
- 
+  const token = await EncryptedStorage.getItem('token')
   const result = await axios({
     method: 'post',
     url: 'http://10.0.2.2:5000/api/change-password',
     headers:{
-      "Content-Type" : "application/json"
+      "Content-Type" : "application/json",
+      Authorization : `Bearer ${token}`
     },
     data: JSON.stringify({
       newpassword: passField,
-      token: await AsyncStorage.getItem('token')
+      token: token
     })
   }).then(res => res.data)
     if (result.status === 'ok') {
@@ -91,6 +93,5 @@ const styles = StyleSheet.create({
       alignItems: 'center',
     }
 });
-
 
 export default ChangePasswordScreen

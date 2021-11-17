@@ -1,6 +1,8 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import EncryptedStorage from 'react-native-encrypted-storage';
+
 
 import {
   SafeAreaView,
@@ -39,9 +41,9 @@ const handleSend = async () => {
     if (result.status === 'ok') {
       // everythign went fine
       console.log('Got the token:', result.data)
-      AsyncStorage.setItem('token', result.data)
+      EncryptedStorage.setItem('token', result.data)
       alert('Success')
-      navigation.navigate('Changepassword')
+      navigation.navigate('Home')
     } else {
       alert(result.error)
     }
