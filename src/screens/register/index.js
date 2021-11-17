@@ -16,7 +16,7 @@ import {
 const height = Dimensions.get('window').height
 const width = Dimensions.get('window').width  
 
-const RegisterScreen = () => {
+const RegisterScreen = ( { navigation } ) => {
 
 const [userField, setUserField] = useState('')
 const [passField, setPassField] = useState('')
@@ -39,6 +39,7 @@ const handleSend = async () => {
     if (result.status === 'ok') {
       // everythign went fine
       alert('Success')
+        navigation.navigate('Login')
     } else {
       alert(result.error)
     }

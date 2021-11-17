@@ -16,9 +16,8 @@ import {
 const height = Dimensions.get('window').height
 const width = Dimensions.get('window').width  
 
-const LoginScreen = ( { navigation } ) => {
+const ChangePasswordScreen = ( { navigation } ) => {
 
-const [userField, setUserField] = useState('')
 const [passField, setPassField] = useState('')
 
 
@@ -27,21 +26,21 @@ const handleSend = async () => {
  
   const result = await axios({
     method: 'post',
-    url: 'http://10.0.2.2:5000/api/login',
+    url: 'http://10.0.2.2:5000/api/change-password',
     headers:{
       "Content-Type" : "application/json"
     },
     data: JSON.stringify({
-      username: userField,
-      password: passField
+      newpassword: passField,
+      token: await AsyncStorage.getItem('token')
     })
   }).then(res => res.data)
     if (result.status === 'ok') {
       // everythign went fine
-      console.log('Got the token:', result.data)
-      AsyncStorage.setItem('token', result.data)
+      console.log('Got the token:', result.status)
+      
       alert('Success')
-      navigation.navigate('Changepassword')
+      navigation.navigate('Login')
     } else {
       alert(result.error)
     }
@@ -53,31 +52,13 @@ const handleSend = async () => {
         <View style={styles.container}>
           <TextInput 
           style={styles.input}
-          onChangeText={text => setUserField(text)}
-          />
-          <TextInput 
-          style={styles.input}
           onChangeText={text => setPassField(text)}
           />
           <TouchableOpacity
           onPress={handleSend}
           >
             <View style={styles.touchable}>
-            <Text style={{color:'white'}}>Login</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-          onPress={() => navigation.navigate('Register')}
-          >
-            <View style={styles.touchable}>
-            <Text style={{color:'white'}}>Register</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-          onPress={() => navigation.navigate('Changepassword')}
-          >
-            <View style={styles.touchable}>
-            <Text style={{color:'white'}}>Forgot Password</Text>
+            <Text style={{color:'white'}}>Submit</Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -112,4 +93,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default LoginScreen
+export default ChangePasswordScreen
